@@ -105,16 +105,6 @@ button {
   opacity: 0.65;
 }
 
-.desktop-nav a,
-.header-book {
-  transition: opacity 180ms ease;
-}
-
-.desktop-nav a:hover,
-.header-book:hover {
-  opacity: 0.65;
-}
-
 .header-book {
   justify-self: end;
   padding-bottom: 7px;
@@ -152,7 +142,8 @@ button {
   background-image: url('https://images.unsplash.com/photo-1712659604528-b179a3634560?auto=format&fit=crop&w=2200&q=88');
   background-position: center 48%;
   background-size: cover;
-  transform: scale(1.01);
+  transform: translate3d(0, var(--hero-parallax-y, 0px), 0) scale(1.12);
+  will-change: transform;
 }
 
 .hero-shade {
@@ -212,6 +203,7 @@ h2 em {
   align-items: end;
   gap: 90px;
   margin: clamp(44px, 7vh, 82px) 0 0 7px;
+  max-width: 600px;
 }
 
 .hero-lower p {
@@ -273,12 +265,21 @@ h2 em {
 }
 
 .intro {
-  min-height: 900px;
+  min-height: 760px;
   padding: 132px clamp(24px, 7.5vw, 116px);
   display: grid;
-  grid-template-columns: 0.5fr 1.15fr 0.9fr;
-  gap: clamp(30px, 5vw, 90px);
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: clamp(36px, 7vw, 110px);
   align-items: center;
+}
+
+.intro > .section-number {
+  grid-column: 1 / -1;
+  margin-bottom: -48px;
+}
+
+.intro-copy {
+  grid-column: 1;
 }
 
 .section-number {
@@ -321,7 +322,9 @@ h2 em {
 
 .intro-image {
   margin: 0;
-  align-self: end;
+  grid-column: 2;
+  grid-row: 2;
+  align-self: center;
 }
 
 .intro-image img {
@@ -347,9 +350,10 @@ h2 em {
 
 .ritual-heading {
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr);
   gap: 30px;
-  margin-bottom: 100px;
+  max-width: 1040px;
+  margin: 0 0 88px auto;
 }
 
 .ritual-heading .section-number {
@@ -357,7 +361,7 @@ h2 em {
 }
 
 .ritual-steps {
-  max-width: 1040px;
+  max-width: 900px;
   padding: 0;
   margin: 0 0 0 auto;
   list-style: none;
@@ -401,13 +405,15 @@ h2 em {
 }
 
 .quote-section {
-  min-height: 740px;
+  min-height: 620px;
   display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
+  grid-template-columns: 0.95fr 1.05fr;
 }
 
 .quote-image {
-  min-height: 650px;
+  min-height: 620px;
+  grid-column: 2;
+  grid-row: 1;
   background: url('https://images.unsplash.com/photo-1717356495389-6ab1e5ff9d84?auto=format&fit=crop&w=1400&q=85')
     center / cover;
 }
@@ -418,6 +424,8 @@ blockquote {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  grid-column: 1;
+  grid-row: 1;
   color: var(--cream);
   background: #a65537;
 }
@@ -447,10 +455,15 @@ blockquote cite {
 .booking {
   padding: 120px clamp(24px, 9vw, 140px);
   display: flex;
+  flex-direction: row-reverse;
   align-items: end;
   justify-content: space-between;
   gap: 60px;
   background: var(--cream);
+}
+
+.booking > div {
+  max-width: 760px;
 }
 
 .booking-button {
@@ -474,14 +487,11 @@ blockquote cite {
   transform: rotate(-4deg) scale(1.035);
 }
 
-.booking-button span {
-  font-size: 20px;
-}
-
 footer {
   padding: 70px clamp(24px, 7.5vw, 116px) 35px;
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
   gap: 40px;
   color: #d8ddd5;
   background: #17211b;
@@ -494,7 +504,8 @@ footer {
 
 footer > div:not(.footer-links) {
   display: flex;
-  gap: 60px;
+  flex-wrap: wrap;
+  gap: 24px clamp(24px, 4vw, 60px);
 }
 
 footer p,
@@ -509,35 +520,85 @@ footer p,
   display: flex;
   flex-direction: column;
   gap: 5px;
+  overflow-wrap: anywhere;
+}
+
+.footer-links a:hover {
+  color: var(--cream);
 }
 
 .copyright {
   grid-column: 1 / -1;
-  padding-top: 50px;
+  padding-top: 35px;
   border-top: 1px solid rgb(255 255 255 / 12%);
 }
 
-@media (max-width: 960px) {
+body.has-scroll-reveal main > section:not(.hero) {
+  opacity: 0;
+  transition:
+    opacity 650ms ease,
+    transform 650ms cubic-bezier(0.2, 0.65, 0.3, 1);
+}
+
+body.has-scroll-reveal main > section.reveal-from-left {
+  transform: translate3d(-44px, 0, 0);
+}
+
+body.has-scroll-reveal main > section.reveal-from-right {
+  transform: translate3d(44px, 0, 0);
+}
+
+body.has-scroll-reveal main > section.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+@media (max-width: 1024px) {
+  .site-header {
+    padding-inline: 28px;
+  }
+
+  .desktop-nav ul {
+    gap: 24px;
+  }
+
   .intro {
-    grid-template-columns: 0.35fr 1fr;
+    min-height: 0;
+    padding-block: 100px;
+    gap: 42px;
   }
 
-  .intro-image {
-    grid-column: 2;
-    width: 70%;
-    margin-top: 50px;
+  .intro h2,
+  .ritual h2,
+  .booking h2 {
+    font-size: clamp(48px, 6vw, 72px);
   }
 
-  .intro-image img {
-    aspect-ratio: 1;
+  .ritual {
+    padding-block: 100px;
   }
 
-  .ritual-heading {
-    grid-template-columns: 0.4fr 1fr;
+  .quote-section,
+  .quote-image {
+    min-height: 540px;
   }
 
-  footer {
-    grid-template-columns: 1fr 1fr;
+  blockquote {
+    padding-inline: 48px;
+  }
+
+  .booking {
+    padding-block: 96px;
+    gap: 40px;
+  }
+
+  .booking-button {
+    width: 190px;
+    height: 190px;
+  }
+
+  footer > div:not(.footer-links) {
+    gap: 30px;
   }
 }
 
@@ -549,17 +610,28 @@ footer p,
     grid-template-columns: 1fr auto;
   }
 
+  .brand {
+    gap: 8px;
+    font-size: 1.15rem;
+    letter-spacing: 0.2em;
+  }
+
+  .brand-img {
+    width: 34px;
+    height: 34px;
+  }
+
   .desktop-nav,
   .header-book {
     display: none;
   }
 
-  /* .menu-toggle {
+  .menu-toggle {
     position: relative;
     z-index: 25;
     display: flex;
-    width: 45px;
-    height: 45px;
+    width: 44px;
+    height: 44px;
     padding: 0;
     align-items: center;
     justify-content: center;
@@ -576,55 +648,14 @@ footer p,
     transition: transform 200ms ease;
   }
 
-  .menu-line:first-of-type {
-    transform: translateY(-4px);
-  }
-
-  .menu-line:last-of-type {
-    transform: translateY(4px);
-  }
-
-  .menu-toggle[aria-expanded='true'] .menu-line:first-of-type {
-    transform: rotate(45deg);
-  }
-
-  .menu-toggle[aria-expanded='true'] .menu-line:last-of-type {
-    transform: rotate(-45deg);
-  } */
-
-    .menu-toggle {
-    position: relative;
-    z-index: 25;
-    display: flex;
-    width: 45px;
-    height: 45px;
-    padding: 0;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    border: 0;
-    cursor: pointer;
-  }
-
-  .menu-line {
-    position: absolute;
-    width: 24px;
-    height: 2px;
-    background: currentColor;
-    transition: transform 200ms ease;
-  }
-
-  /* Верхняя полоска */
   .menu-line:first-child {
     transform: translateY(-4px);
   }
 
-  /* Нижняя полоска */
   .menu-line:last-child {
     transform: translateY(4px);
   }
 
-  /* Анимация при открытии (превращение в крестик) */
   .menu-toggle[aria-expanded='true'] .menu-line:first-child {
     transform: rotate(45deg);
   }
@@ -637,29 +668,33 @@ footer p,
     position: fixed;
     z-index: 15;
     inset: 0;
-    padding: 120px 24px 38px;
+    padding: max(112px, 16svh) 24px 32px;
     display: flex;
     flex-direction: column;
     color: var(--cream);
     background: var(--moss);
+    visibility: hidden;
     opacity: 0;
     pointer-events: none;
     transform: translateY(-12px);
     transition:
       opacity 200ms ease,
-      transform 200ms ease;
+      transform 200ms ease,
+      visibility 200ms;
   }
 
   .mobile-menu.is-open {
+    visibility: visible;
     opacity: 1;
     pointer-events: auto;
     transform: translateY(0);
+    transition-delay: 0s;
   }
 
   .mobile-menu a {
-    padding: 17px 0;
+    padding: 15px 0;
     font-family: 'Manrope', sans-serif;
-    font-size: 36px;
+    font-size: clamp(30px, 8vw, 38px);
     letter-spacing: -0.04em;
     border-bottom: 1px solid rgb(255 255 255 / 16%);
   }
@@ -667,48 +702,60 @@ footer p,
   .mobile-menu p {
     margin: auto 0 0;
     color: var(--sage);
-    font-size: 11px;
-    letter-spacing: 0.15em;
+    font-size: 10px;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
   }
 
   .hero {
-    min-height: 720px;
+    min-height: max(650px, 100svh);
+    height: auto;
   }
 
   .hero-backdrop {
     background-position: 58% center;
+    transform: scale(1.04);
+    will-change: auto;
   }
 
   .hero-content {
     width: auto;
-    padding-top: 170px;
+    padding-top: clamp(150px, 23svh, 190px);
+    padding-bottom: 120px;
     margin: 0 22px;
   }
 
   .eyebrow {
+    gap: 10px;
     margin-bottom: 24px;
     font-size: 9px;
+    line-height: 1.6;
+    letter-spacing: 0.13em;
+  }
+
+  .eyebrow > span {
+    flex: 0 0 24px;
   }
 
   h1 {
-    font-size: clamp(62px, 20vw, 90px);
+    font-size: clamp(44px, 11vw, 68px);
+    line-height: 0.98;
   }
 
   .hero-lower {
     display: block;
-    margin-top: 40px;
+    margin: 34px 0 0;
   }
 
   .hero-lower p {
-    max-width: 320px;
-    font-size: 13px;
+    max-width: 38ch;
+    font-size: 14px;
   }
 
   .circle-link {
-    width: 52px;
-    height: 52px;
-    margin-top: 28px;
+    width: 50px;
+    height: 50px;
+    margin-top: 24px;
   }
 
   .hero-note {
@@ -716,50 +763,91 @@ footer p,
   }
 
   .intro {
-    min-height: auto;
-    padding: 85px 22px;
-    display: block;
+    min-height: 0;
+    padding: 76px 22px 84px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .intro > .section-number {
+    grid-column: 1;
+    margin: 0 0 42px;
+  }
+
+  .intro-copy,
+  .intro-image {
+    grid-column: 1;
+  }
+
+  .intro-copy {
+    grid-row: 2;
   }
 
   .section-number {
-    margin-bottom: 60px;
+    margin-bottom: 42px;
   }
 
   .intro h2,
   .ritual h2,
   .booking h2 {
-    font-size: clamp(50px, 15vw, 70px);
+    font-size: clamp(42px, 11vw, 64px);
+    line-height: 1;
   }
 
   .body-copy {
-    margin-top: 34px;
+    margin: 28px 0;
+    font-size: 14px;
+    line-height: 1.75;
+  }
+
+  .text-link {
+    gap: 22px;
+    line-height: 1.6;
   }
 
   .intro-image {
-    width: calc(100% - 40px);
-    margin: 70px 0 0 auto;
+    grid-row: 3;
+    width: min(100%, 440px);
+    margin: 48px 0 0 auto;
   }
 
   .intro-image img {
-    aspect-ratio: 0.82;
+    aspect-ratio: 0.9;
+  }
+
+  .intro-image figcaption {
+    font-size: 8px;
+    line-height: 1.6;
   }
 
   .ritual {
-    padding: 85px 22px;
+    padding: 76px 22px 82px;
   }
 
   .ritual-heading {
-    display: block;
-    margin-bottom: 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 0 0 48px auto;
+    max-width: 540px;
+    text-align: right;
+  }
+
+  .ritual-heading .section-number {
+    align-self: flex-end;
+    margin: 0 0 34px;
   }
 
   .ritual-steps {
-    margin: 0;
+    max-width: 540px;
+    margin: 0 auto 0 0;
   }
 
   .ritual-steps li {
-    grid-template-columns: 44px 1fr;
-    padding: 30px 0;
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 14px;
+    padding: 25px 0;
   }
 
   .ritual-steps li > div {
@@ -767,8 +855,8 @@ footer p,
   }
 
   .ritual-steps h3 {
-    margin-bottom: 15px;
-    font-size: 30px;
+    margin-bottom: 10px;
+    font-size: 28px;
   }
 
   .ritual-steps p {
@@ -777,49 +865,96 @@ footer p,
 
   .quote-section {
     min-height: 0;
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .quote-image {
-    min-height: 470px;
-    background-position: center 60%;
+    min-height: 0;
+    height: clamp(280px, 76vw, 410px);
+    grid-column: 1;
+    grid-row: 2;
+    background-position: center 58%;
   }
 
   blockquote {
-    min-height: 510px;
-    padding: 65px 28px;
+    min-height: 0;
+    padding: 68px 28px 72px;
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  blockquote svg {
+    width: 38px;
+    margin-bottom: 36px;
   }
 
   blockquote p {
-    font-size: 38px;
+    margin-bottom: 32px;
+    font-size: clamp(36px, 9vw, 48px);
   }
 
   .booking {
-    padding: 85px 22px;
-    align-items: flex-start;
+    padding: 76px 22px 82px;
+    align-items: stretch;
     flex-direction: column;
+    gap: 38px;
+  }
+
+  .booking .eyebrow {
+    max-width: 34ch;
   }
 
   .booking-button {
-    width: 180px;
-    height: 180px;
-    margin-left: auto;
+    width: 168px;
+    height: 168px;
+    align-self: flex-start;
+    margin: 0;
     padding: 24px;
     font-size: 10px;
   }
 
   footer {
-    padding: 62px 22px 30px;
-    grid-template-columns: 1fr;
+    padding: 54px 22px 28px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
   }
 
   footer > div:not(.footer-links) {
-    margin-top: 24px;
-    gap: 45px;
+    flex-wrap: wrap;
+    gap: 14px 36px;
+  }
+
+  .footer-links {
+    overflow-wrap: anywhere;
   }
 
   .copyright {
-    margin-top: 30px;
+    margin-top: 8px;
+    padding-top: 26px;
+  }
+}
+
+@media (max-width: 380px) {
+  .site-header {
+    padding-inline: 16px;
+  }
+
+  .hero-content {
+    margin-inline: 18px;
+  }
+
+  .intro,
+  .ritual,
+  .booking {
+    padding-inline: 18px;
+  }
+
+  blockquote {
+    padding-inline: 22px;
+  }
+
+  footer {
+    padding-inline: 18px;
   }
 }
 
@@ -832,5 +967,16 @@ footer p,
   *::before,
   *::after {
     transition-duration: 0.01ms !important;
+  }
+
+  .hero-backdrop {
+    transform: scale(1.04);
+    will-change: auto;
+  }
+
+  body.has-scroll-reveal main > section:not(.hero) {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }
