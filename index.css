@@ -139,7 +139,7 @@ button {
 }
 
 .hero-backdrop {
-  background-image: url('https://images.unsplash.com/photo-1712659604528-b179a3634560?auto=format&fit=crop&w=2200&q=88');
+  background-image: url(images/s-1.avif);
   background-position: center 48%;
   background-size: cover;
   transform: translate3d(0, var(--hero-parallax-y, 0px), 0) scale(1.12);
@@ -183,7 +183,6 @@ h2 {
   margin: 0;
   font-family: 'Manrope', sans-serif;
   font-weight: 400;
-  /* letter-spacing: -0.055em; */
   line-height: 0.92;
 }
 
@@ -414,7 +413,7 @@ h2 em {
   min-height: 620px;
   grid-column: 2;
   grid-row: 1;
-  background: url('https://images.unsplash.com/photo-1717356495389-6ab1e5ff9d84?auto=format&fit=crop&w=1400&q=85')
+  background: url(images/m.avif)
     center / cover;
 }
 
@@ -468,14 +467,14 @@ blockquote cite {
 
 .booking-button {
   display: flex;
-  width: 230px;
-  height: 230px;
+  width: 180px;
+  height: 180px;
   flex: 0 0 auto;
   padding: 31px;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   color: white;
-  font-size: 12px;
+  font-size: 16px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   background: var(--rust);
@@ -484,7 +483,7 @@ blockquote cite {
 }
 
 .booking-button:hover {
-  transform: rotate(-4deg) scale(1.035);
+  transform: rotate(-4deg) scale(1.1);
 }
 
 footer {
